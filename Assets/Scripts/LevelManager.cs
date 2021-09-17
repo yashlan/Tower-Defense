@@ -9,17 +9,8 @@ using Yashlan.util;
 
 namespace Yashlan.manage
 {
-    public enum GameState
-    {
-        Ready,
-        Start,
-        Win,
-        Lose
-    }
     public class LevelManager : SingletonBehaviour<LevelManager>
     {
-        [SerializeField]
-        private GameState gameState;
         [SerializeField]
         private Transform _towerUIParent;
         [SerializeField]
@@ -53,7 +44,6 @@ namespace Yashlan.manage
 
         private int _currentLives;
         private int _enemyCounter;
-        public bool IsOver { get; private set; }
 
         void Start()
         {
@@ -64,44 +54,56 @@ namespace Yashlan.manage
 
         void Update()
         {
-            _runningSpawnDelay -= Time.unscaledDeltaTime;
-
-            if (_runningSpawnDelay <= 0f)
+            if(GameManager.Instance.GameState == GameState.Start)
             {
-                SpawnEnemy();
-                _runningSpawnDelay = _spawnDelay;
-            }
+                _runningSpawnDelay -= Time.unscaledDeltaTime;
 
-            foreach (Tower tower in _spawnedTowers)
-            {
-                tower.CheckNearestEnemy(_spawnedEnemies);
-                tower.SeekTarget();
-                tower.ShootTarget();
-            }
-
-            foreach (Enemy enemy in _spawnedEnemies)
-            {
-                if (!enemy.gameObject.activeSelf) continue;
-
-                if (Vector2.Distance(enemy.transform.position, enemy.TargetPosition) < 0.1f)
+                if (_runningSpawnDelay <= 0f)
                 {
-                    enemy.SetCurrentPathIndex(enemy.CurrentPathIndex + 1);
-
-                    if (enemy.CurrentPathIndex < _enemyPaths.Length)
-                        enemy.SetTargetPosition(_enemyPaths[enemy.CurrentPathIndex].position);
-                    else
-                    {
-                        ReduceLives(1);
-                        enemy.gameObject.SetActive(false);
-                    }
+                    SpawnEnemy();
+                    _runningSpawnDelay = _spawnDelay;
                 }
-                else
-                    enemy.MoveToTarget();
+
+                foreach (Tower tower in _spawnedTowers)
+                {
+                    if (tower == null) continue;
+                    tower.CheckNearestEnemy(_spawnedEnemies);
+                    tower.SeekTarget();
+                    tower.ShootTarget();
+                }
+
+                foreach (Enemy enemy in _spawnedEnemies)
+                {
+                    if (!enemy.gameObject.activeSelf) continue;
+
+                    if (enemy.EnemyType != EnemyType.Enemy1)
+                    {
+                        enemy.CheckNearestTower(_spawnedTowers);
+                        enemy.SeekTarget();
+                        enemy.ShootTarget();
+                    }
+
+                    if (Vector2.Distance(enemy.transform.position, enemy.TargetPosition) < 0.1f)
+                    {
+                        enemy.SetCurrentPathIndex(enemy.CurrentPathIndex + 1);
+
+                        if (enemy.CurrentPathIndex < _enemyPaths.Length)
+                            enemy.SetTargetPosition(_enemyPaths[enemy.CurrentPathIndex].position);
+                        else
+                        {
+                            ReduceLives(1);
+                            enemy.gameObject.SetActive(false);
+                        }
+                    }
+                    else
+                        enemy.MoveToTarget();
+                }
             }
 
-            if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(0);
-
-            if (IsOver) return;
+            if (GameManager.Instance.GameState == GameState.Lose || GameManager.Instance.GameState == GameState.Win)
+            {
+                if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(0);
+            }
         }
 
         public Bullet GetBulletFromPool(Bullet prefab)
@@ -146,18 +148,18 @@ namespace Yashlan.manage
             if (_enemyCounter < 0)
             {
                 bool isAllEnemyDestroyed = _spawnedEnemies.Find(e => e.gameObject.activeSelf) == null;
-                if (isAllEnemyDestroyed) SetGameOver(true);
+                if (isAllEnemyDestroyed) SetGameState(GameState.Win);
                 return;
             }
 
             int randomIndex = Random.Range(0, _enemyPrefabs.Length);
-
+            
             string enemyIndexString = (randomIndex + 1).ToString();
-
+            
             GameObject newEnemyObj = _spawnedEnemies.Find(e => !e.gameObject.activeSelf && e.name.Contains(enemyIndexString))?.gameObject;
-
+            
             if (newEnemyObj == null) newEnemyObj = Instantiate(_enemyPrefabs[randomIndex].gameObject);
-
+            
             Enemy newEnemy = newEnemyObj.GetComponent<Enemy>();
 
             if (!_spawnedEnemies.Contains(newEnemy)) _spawnedEnemies.Add(newEnemy);
@@ -171,7 +173,7 @@ namespace Yashlan.manage
         private void ReduceLives(int value)
         {
             SetCurrentLives(_currentLives - value);
-            if (_currentLives <= 0) SetGameOver(false);
+            if (_currentLives <= 0) SetGameState(GameState.Lose);
         }
 
         private void SetCurrentLives(int currentLives)
@@ -186,10 +188,10 @@ namespace Yashlan.manage
             _totalEnemyInfo.text = $"Total Enemy: {Mathf.Max(_enemyCounter, 0)}";
         }
 
-        private void SetGameOver(bool isWin)
+        private void SetGameState(GameState gameState)
         {
-            IsOver = true;
-            _statusInfo.text = isWin ? "You Win!" : "You Lose!";
+            GameManager.Instance.GameState = gameState;
+            _statusInfo.text = GameManager.Instance.GameState == GameState.Win ? "You Win!" : "You Lose!";
             _panel.gameObject.SetActive(true);
         }
 

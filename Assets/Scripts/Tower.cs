@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Yashlan.audio;
 using Yashlan.bullet;
 using Yashlan.enemy;
 using Yashlan.manage;
@@ -9,9 +10,19 @@ namespace Yashlan.tower
     public class Tower : MonoBehaviour
     {
         [SerializeField]
+        private int _price;
+        [SerializeField]
         private SpriteRenderer _towerPlace;
         [SerializeField]
         private SpriteRenderer _towerHead;
+        [SerializeField]
+        private SpriteRenderer _healthBar;
+        [SerializeField]
+        private SpriteRenderer _healthFill;
+        [SerializeField]
+        private int _maxHealth = 1;
+        [SerializeField]
+        private int _currentHealth = 1;
         [SerializeField]
         private int _shootPower = 1;
         [SerializeField]
@@ -30,6 +41,8 @@ namespace Yashlan.tower
         private Enemy _targetEnemy;
         private Quaternion _targetRotation;
 
+        public int Price => _price;
+
         public Sprite GetTowerHeadIcon() => _towerHead.sprite;
 
         public Vector2? PlacePosition { get; private set; }
@@ -43,6 +56,24 @@ namespace Yashlan.tower
             int orderInLayer = toFront ? 2 : 0;
             _towerPlace.sortingOrder = orderInLayer;
             _towerHead.sortingOrder = orderInLayer;
+        }
+
+        public void ReduceTowerHealth(int damage)
+        {
+            _currentHealth -= damage;
+            AudioPlayer.Instance.PlaySFX(AudioPlayer.HIT_ENEMY_SFX);
+
+            if (_currentHealth <= 0)
+            {
+                _currentHealth = 0;
+                AudioPlayer.Instance.PlaySFX(AudioPlayer.ENEMY_DIE_SFX);
+                Destroy(gameObject);
+            }
+
+            float healthPercentage = (float)_currentHealth / _maxHealth;
+
+            _healthFill.size = new Vector2(healthPercentage * _healthBar.size.x, _healthBar.size.y);
+
         }
 
         public void CheckNearestEnemy(List<Enemy> enemies)
@@ -109,6 +140,59 @@ namespace Yashlan.tower
             _targetRotation = Quaternion.Euler(new Vector3(0f, 0f, targetAngle - 90f));
 
             _towerHead.transform.rotation = Quaternion.RotateTowards(_towerHead.transform.rotation, _targetRotation, Time.deltaTime * 180f);
+        }
+
+        GameObject _placementTemp = null;
+        void OnTriggerStay2D(Collider2D collision)
+        {
+            if(collision.gameObject.tag == "placement")
+            {
+                var placement = collision.GetComponent<TowerPlacement>();
+
+                _placementTemp = placement.gameObject;
+
+                foreach (var towerUI in FindObjectsOfType<TowerUI>())
+                {
+                    switch (towerUI.TowerUIType)
+                    {
+                        case TowerUIType.TowerGreen:
+                            if (towerUI.IsDropped)
+                            {
+                                placement.gameObject.SetActive(false);
+                                towerUI.IsDropped = false;
+                                return;
+                            }
+                            break;
+
+                        case TowerUIType.TowerYellow:
+                            if (towerUI.IsDropped)
+                            {
+                                placement.gameObject.SetActive(false);
+                                towerUI.IsDropped = false;
+                                return;
+                            }
+                            break;
+
+                        case TowerUIType.TowerRed:
+                            if (towerUI.IsDropped)
+                            {
+                                placement.gameObject.SetActive(false);
+                                towerUI.IsDropped = false;
+                                return;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        bool _showPlacement = false;
+        void OnDestroy()
+        {
+            if (_placementTemp == null) return;
+
+            _showPlacement = true;
+            if (_showPlacement) _placementTemp.SetActive(true);
         }
     }
 }

@@ -5,52 +5,107 @@ using Yashlan.manage;
 
 namespace Yashlan.tower
 {
+    public enum TowerUIType
+    {
+        TowerGreen,
+        TowerYellow,
+        TowerRed,
+    }
     public class TowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [SerializeField] 
-        private Image _towerIcon;
+        public TowerUIType TowerUIType;
 
+        [SerializeField]
+        private bool _isDropped = false;
+        [SerializeField]
+        private Image _towerIcon;
+        [SerializeField]
+        private Text _priceText;
+
+        private int _towerPrice;
         private Tower _towerPrefab;
         private Tower _currentSpawnedTower;
 
-
-        public void OnBeginDrag(PointerEventData eventData)
+        public bool IsDropped
         {
-            GameObject newTowerObj = Instantiate(_towerPrefab.gameObject);
-            _currentSpawnedTower = newTowerObj.GetComponent<Tower>();
-            _currentSpawnedTower.ToggleOrderInLayer(true);
+            get => _isDropped;
+            set => _isDropped = value;
         }
 
-        public void OnDrag(PointerEventData eventData)
-
+        void Start()
         {
-            Camera mainCamera = Camera.main;
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = -mainCamera.transform.position.z;
-            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            _currentSpawnedTower.transform.position = targetPosition;
-        }
-
-        public void OnEndDrag(PointerEventData eventData)
-        {
-            if (_currentSpawnedTower.PlacePosition == null)
+            switch (_towerPrefab.name)
             {
-                Destroy(_currentSpawnedTower.gameObject);
-            }
-            else
-            {
-                _currentSpawnedTower.LockPlacement();
-                _currentSpawnedTower.ToggleOrderInLayer(false);
-                LevelManager.Instance.RegisterSpawnedTower(_currentSpawnedTower);
-                _currentSpawnedTower = null;
+                case "tower 1":
+                    TowerUIType = TowerUIType.TowerGreen;
+                    break;
 
+                case "tower 2":
+                    TowerUIType = TowerUIType.TowerYellow;
+                    break;
+
+                case "tower 3":
+                    TowerUIType = TowerUIType.TowerRed;
+                    break;
             }
         }
 
         public void SetTowerPrefab(Tower tower)
         {
+            _towerPrice = tower.Price;
+            _priceText.text = tower.Price.ToString();
             _towerPrefab = tower;
             _towerIcon.sprite = tower.GetTowerHeadIcon();
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            _isDropped = false;
+
+            if (GameManager.Instance.CurrentGold >= _towerPrice)
+            {
+                GameObject newTowerObj = Instantiate(_towerPrefab.gameObject);
+                _currentSpawnedTower = newTowerObj.GetComponent<Tower>();
+                _currentSpawnedTower.ToggleOrderInLayer(true);
+            }
+            else
+                StartCoroutine(GameManager.Instance.ShowNotEnoughGoldInfo());
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            _isDropped = false;
+
+            if (GameManager.Instance.CurrentGold >= _towerPrice)
+            {
+                Camera mainCamera = Camera.main;
+                Vector3 mousePosition = Input.mousePosition;
+                mousePosition.z = -mainCamera.transform.position.z;
+                Vector3 targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                _currentSpawnedTower.transform.position = targetPosition;
+            }
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (_currentSpawnedTower.PlacePosition != null)
+            {
+                GameManager.Instance.BuyTower(_towerPrice, isSucces =>
+                {
+                    if (isSucces)
+                    {
+                        _currentSpawnedTower.LockPlacement();
+                        _currentSpawnedTower.ToggleOrderInLayer(false);
+                        LevelManager.Instance.RegisterSpawnedTower(_currentSpawnedTower);
+                        _currentSpawnedTower = null;
+                        _isDropped = true;
+                    }
+                    else
+                        _isDropped = false;
+                });
+            }
+            else
+                Destroy(_currentSpawnedTower.gameObject);
         }
     }
 }

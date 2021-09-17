@@ -94,10 +94,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061500ee9c59af044a46b757f31c526b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyType: 0
   _maxHealth: 5
-  _moveSpeed: 2
+  _moveSpeed: 0.8
+  _head: {fileID: 0}
   _healthBar: {fileID: 3813099784341955993}
   _healthFill: {fileID: 4268907895469493708}
+  _shootPower: 0
+  _shootDistance: 0
+  _shootDelay: 0
+  _bulletSpeed: 0
+  _bulletSplashRadius: 0
+  _bulletPrefab: {fileID: 0}
 --- !u!58 &3221101088435858426
 CircleCollider2D:
   m_ObjectHideFlags: 0
