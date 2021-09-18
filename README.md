@@ -1,5 +1,9 @@
 # Tower Defense
 tugas chapter 4 dilo game academy
+
+## Resolusi
+
+ukuran layar 16:9
  
 ## Fitur tambahan
 
