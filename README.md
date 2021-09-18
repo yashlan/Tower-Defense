@@ -7,6 +7,7 @@ ukuran layar 16:9
  
 ## Fitur tambahan
 
+- SingletonBehaviour
 - backsound, win dan lose sound
 - animasi di tombol/text
 - menambahkan harga tower
@@ -14,7 +15,7 @@ ukuran layar 16:9
 - semakin sedikit total enemy maka yang muncul enemy dengan stats tinggi
 - 3 variant tank enemy
 - tank bisa menembak tower
-- setiap enemy ke destroy maka anda mendapat reward Gold
+- setiap mengalahkan enemy maka anda mendapat reward Gold
 - locked slot placement tower : anda dapat membeli slot placement tower dengan menekan button buy slot tower. max slot = 4
 
 ## Gameplay
