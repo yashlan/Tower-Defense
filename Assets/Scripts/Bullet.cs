@@ -113,7 +113,5 @@ namespace Yashlan.bullet
 
         public void SetTargetEnemy(Enemy enemy) => _targetEnemy = enemy;
         public void SetTargetTower(Tower tower) => _targetTower = tower;
-
     }
-
 }

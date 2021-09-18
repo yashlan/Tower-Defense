@@ -10,6 +10,8 @@ namespace Yashlan.tower
     public class Tower : MonoBehaviour
     {
         [SerializeField]
+        private bool _isDie = false;
+        [SerializeField]
         private int _price;
         [SerializeField]
         private SpriteRenderer _towerPlace;
@@ -65,13 +67,17 @@ namespace Yashlan.tower
 
             if (_currentHealth <= 0)
             {
-                _currentHealth = 0;
-                AudioPlayer.Instance.PlaySFX(AudioPlayer.TOWER_DIE_SFX);
-                Destroy(gameObject);
+                _isDie = true;
+
+                if (_isDie)
+                {
+                    _currentHealth = 0;
+                    AudioPlayer.Instance.PlaySFX(AudioPlayer.TOWER_DIE_SFX);
+                    Destroy(gameObject);
+                }
             }
 
             float healthPercentage = (float)_currentHealth / _maxHealth;
-
             _healthFill.size = new Vector2(healthPercentage * _healthBar.size.x, _healthBar.size.y);
 
         }
@@ -132,13 +138,9 @@ namespace Yashlan.tower
         public void SeekTarget()
         {
             if (_targetEnemy == null) return;
-
             Vector3 direction = _targetEnemy.transform.position - transform.position;
-
             float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
             _targetRotation = Quaternion.Euler(new Vector3(0f, 0f, targetAngle - 90f));
-
             _towerHead.transform.rotation = Quaternion.RotateTowards(_towerHead.transform.rotation, _targetRotation, Time.deltaTime * 180f);
         }
 
@@ -160,7 +162,6 @@ namespace Yashlan.tower
                             {
                                 placement.gameObject.SetActive(false);
                                 towerUI.IsDropped = false;
-                                return;
                             }
                             break;
 
@@ -169,7 +170,6 @@ namespace Yashlan.tower
                             {
                                 placement.gameObject.SetActive(false);
                                 towerUI.IsDropped = false;
-                                return;
                             }
                             break;
 
@@ -178,7 +178,6 @@ namespace Yashlan.tower
                             {
                                 placement.gameObject.SetActive(false);
                                 towerUI.IsDropped = false;
-                                return;
                             }
                             break;
                     }
@@ -186,13 +185,9 @@ namespace Yashlan.tower
             }
         }
 
-        bool _showPlacement = false;
         void OnDestroy()
         {
-            if (_placementTemp == null) return;
-
-            _showPlacement = true;
-            if (_showPlacement) _placementTemp.SetActive(true);
+            if (_isDie){ if (_placementTemp != null) _placementTemp.SetActive(true); }
         }
     }
 }

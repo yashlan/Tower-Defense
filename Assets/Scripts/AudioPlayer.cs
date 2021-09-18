@@ -6,12 +6,13 @@ namespace Yashlan.audio
 {
     public class AudioPlayer : SingletonBehaviour<AudioPlayer>
     {
-        public const string HIT_ENEMY_SFX = "hit-enemy";
-        public const string HIT_TOWER_SFX = "hit-enemy";
-        public const string ENEMY_DIE_SFX = "enemy-die";
-        public const string TOWER_DIE_SFX = "enemy-die";
-        public const string GAME_WIN_SFX  = "game-win";
-        public const string GAME_LOSE_SFX = "game-lose";
+        public const string DROP_TOWER_SFX = "drop-tower";
+        public const string HIT_ENEMY_SFX  = "hit-enemy";
+        public const string HIT_TOWER_SFX  = "hit-enemy";
+        public const string ENEMY_DIE_SFX  = "enemy-die";
+        public const string TOWER_DIE_SFX  = "enemy-die";
+        public const string GAME_WIN_SFX   = "game-win";
+        public const string GAME_LOSE_SFX  = "game-lose";
 
         [SerializeField]
         private AudioClip _bgmSound;
@@ -21,13 +22,6 @@ namespace Yashlan.audio
         private List<AudioClip> _audioClips;
 
         private AudioSource _bgmSource;
-        public void PlaySFX(string name)
-        {
-            AudioClip sfx = _audioClips.Find(s => s.name == name);
-            if (sfx == null) return;
-
-            _audioSource.PlayOneShot(sfx);
-        }
 
         void Start()
         {
@@ -38,9 +32,14 @@ namespace Yashlan.audio
             _bgmSource.Play();
         }
 
-        public void StopBGM()
+        public void StopBGM() => _bgmSource.Stop();
+
+        public void PlaySFX(string name)
         {
-            _bgmSource.Stop();
+            AudioClip sfx = _audioClips.Find(s => s.name == name);
+            if (sfx == null) return;
+
+            _audioSource.PlayOneShot(sfx);
         }
     }
 }

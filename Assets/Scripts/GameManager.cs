@@ -45,6 +45,8 @@ namespace Yashlan.manage
 
         private GameObject notEnoughInfo = null;
 
+        public int CurrentGold => _currentGold;
+
         public GameState GameState
         {
             get => _gameState;
@@ -57,7 +59,7 @@ namespace Yashlan.manage
         void Start()
         {
             GameObject canvas = GameObject.Find("Canvas");
-            var offset = new Vector3(0, 3.5f, 0);
+            var offset = new Vector3(0, 4f, 0);
             Vector3 canvasPos = canvas.transform.position + offset;
 
             notEnoughInfo = Instantiate(_goldNotEnoughPrefab, canvasPos, Quaternion.identity, canvas.transform);
@@ -82,8 +84,6 @@ namespace Yashlan.manage
             notEnoughInfo.SetActive(false);
             yield break;
         }
-
-        public int CurrentGold => _currentGold;
 
         int index = 0;
         public void BuySlotTowerOnClick()
@@ -122,6 +122,5 @@ namespace Yashlan.manage
         }
 
         public void AddGoldOnEnemyDead(int amount) => _currentGold += amount;
-
     }
 }

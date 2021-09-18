@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Yashlan.audio;
 using Yashlan.manage;
 
 namespace Yashlan.tower
@@ -53,7 +54,7 @@ namespace Yashlan.tower
         public void SetTowerPrefab(Tower tower)
         {
             _towerPrice = tower.Price;
-            _priceText.text = tower.Price.ToString();
+            _priceText.text = _towerPrice.ToString();
             _towerPrefab = tower;
             _towerIcon.sprite = tower.GetTowerHeadIcon();
         }
@@ -87,7 +88,8 @@ namespace Yashlan.tower
                     Vector3 mousePosition = Input.mousePosition;
                     mousePosition.z = -mainCamera.transform.position.z;
                     Vector3 targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-                    _currentSpawnedTower.transform.position = targetPosition;
+                    if(_currentSpawnedTower != null)
+                        _currentSpawnedTower.transform.position = targetPosition;
                 }
             }
         }
@@ -109,6 +111,7 @@ namespace Yashlan.tower
                             LevelManager.Instance.RegisterSpawnedTower(_currentSpawnedTower);
                             _currentSpawnedTower = null;
                             _isDropped = true;
+                            AudioPlayer.Instance.PlaySFX(AudioPlayer.DROP_TOWER_SFX);
                         }
                         else
                             _isDropped = false;
