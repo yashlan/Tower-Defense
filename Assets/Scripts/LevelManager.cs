@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Yashlan.audio;
 using Yashlan.bullet;
 using Yashlan.enemy;
 using Yashlan.tower;
@@ -44,6 +45,7 @@ namespace Yashlan.manage
 
         private int _currentLives;
         private int _enemyCounter;
+        private int randomIndex = 0;
 
         void Start()
         {
@@ -141,6 +143,28 @@ namespace Yashlan.manage
             }
         }
 
+        private void GetSpawnIndex()
+        {
+            if (_enemyCounter >= 70)
+            {
+                randomIndex = Random.Range(0, 2);
+                if (randomIndex == 2) randomIndex = 1;
+                _spawnDelay = 5;
+            }
+            else if (_enemyCounter >= 40 && _enemyCounter < 70)
+            {
+                randomIndex = Random.Range(0, 3);
+                if (randomIndex == 3) randomIndex = 2;
+                _spawnDelay = 4;
+            }
+            else
+            {
+                randomIndex = Random.Range(1, 4);
+                if (randomIndex == 4) randomIndex = 3;
+                _spawnDelay = 3;
+            }
+        }
+
         private void SpawnEnemy()
         {
             SetTotalEnemy(--_enemyCounter);
@@ -152,8 +176,8 @@ namespace Yashlan.manage
                 return;
             }
 
-            int randomIndex = Random.Range(0, _enemyPrefabs.Length);
-            
+            GetSpawnIndex();
+
             string enemyIndexString = (randomIndex + 1).ToString();
             
             GameObject newEnemyObj = _spawnedEnemies.Find(e => !e.gameObject.activeSelf && e.name.Contains(enemyIndexString))?.gameObject;
@@ -190,8 +214,15 @@ namespace Yashlan.manage
 
         private void SetGameState(GameState gameState)
         {
+            AudioPlayer.Instance.StopBGM();
             GameManager.Instance.GameState = gameState;
             _statusInfo.text = GameManager.Instance.GameState == GameState.Win ? "You Win!" : "You Lose!";
+            
+            if (GameManager.Instance.GameState == GameState.Win)
+                AudioPlayer.Instance.PlaySFX(AudioPlayer.GAME_WIN_SFX);
+            else
+                AudioPlayer.Instance.PlaySFX(AudioPlayer.GAME_LOSE_SFX);
+
             _panel.gameObject.SetActive(true);
         }
 

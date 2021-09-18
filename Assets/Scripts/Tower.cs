@@ -61,12 +61,12 @@ namespace Yashlan.tower
         public void ReduceTowerHealth(int damage)
         {
             _currentHealth -= damage;
-            AudioPlayer.Instance.PlaySFX(AudioPlayer.HIT_ENEMY_SFX);
+            AudioPlayer.Instance.PlaySFX(AudioPlayer.HIT_TOWER_SFX);
 
             if (_currentHealth <= 0)
             {
                 _currentHealth = 0;
-                AudioPlayer.Instance.PlaySFX(AudioPlayer.ENEMY_DIE_SFX);
+                AudioPlayer.Instance.PlaySFX(AudioPlayer.TOWER_DIE_SFX);
                 Destroy(gameObject);
             }
 

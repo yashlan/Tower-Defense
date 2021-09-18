@@ -60,52 +60,63 @@ namespace Yashlan.tower
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            _isDropped = false;
-
-            if (GameManager.Instance.CurrentGold >= _towerPrice)
+            if(GameManager.Instance.GameState == GameState.Start)
             {
-                GameObject newTowerObj = Instantiate(_towerPrefab.gameObject);
-                _currentSpawnedTower = newTowerObj.GetComponent<Tower>();
-                _currentSpawnedTower.ToggleOrderInLayer(true);
+                _isDropped = false;
+
+                if (GameManager.Instance.CurrentGold >= _towerPrice)
+                {
+                    GameObject newTowerObj = Instantiate(_towerPrefab.gameObject);
+                    _currentSpawnedTower = newTowerObj.GetComponent<Tower>();
+                    _currentSpawnedTower.ToggleOrderInLayer(true);
+                }
+                else
+                    StartCoroutine(GameManager.Instance.ShowNotEnoughGoldInfo());
             }
-            else
-                StartCoroutine(GameManager.Instance.ShowNotEnoughGoldInfo());
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            _isDropped = false;
-
-            if (GameManager.Instance.CurrentGold >= _towerPrice)
+            if(GameManager.Instance.GameState == GameState.Start)
             {
-                Camera mainCamera = Camera.main;
-                Vector3 mousePosition = Input.mousePosition;
-                mousePosition.z = -mainCamera.transform.position.z;
-                Vector3 targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-                _currentSpawnedTower.transform.position = targetPosition;
+                _isDropped = false;
+
+                if (GameManager.Instance.CurrentGold >= _towerPrice)
+                {
+                    Camera mainCamera = Camera.main;
+                    Vector3 mousePosition = Input.mousePosition;
+                    mousePosition.z = -mainCamera.transform.position.z;
+                    Vector3 targetPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                    _currentSpawnedTower.transform.position = targetPosition;
+                }
             }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (_currentSpawnedTower.PlacePosition != null)
+            if(GameManager.Instance.GameState == GameState.Start)
             {
-                GameManager.Instance.BuyTower(_towerPrice, isSucces =>
+                if (_currentSpawnedTower == null) return;
+
+                if (_currentSpawnedTower.PlacePosition != null)
                 {
-                    if (isSucces)
+                    GameManager.Instance.BuyTower(_towerPrice, isSucces =>
                     {
-                        _currentSpawnedTower.LockPlacement();
-                        _currentSpawnedTower.ToggleOrderInLayer(false);
-                        LevelManager.Instance.RegisterSpawnedTower(_currentSpawnedTower);
-                        _currentSpawnedTower = null;
-                        _isDropped = true;
-                    }
-                    else
-                        _isDropped = false;
-                });
+                        if (isSucces)
+                        {
+                            _currentSpawnedTower.LockPlacement();
+                            _currentSpawnedTower.ToggleOrderInLayer(false);
+                            LevelManager.Instance.RegisterSpawnedTower(_currentSpawnedTower);
+                            _currentSpawnedTower = null;
+                            _isDropped = true;
+                        }
+                        else
+                            _isDropped = false;
+                    });
+                }
+                else
+                    Destroy(_currentSpawnedTower.gameObject);
             }
-            else
-                Destroy(_currentSpawnedTower.gameObject);
         }
     }
 }

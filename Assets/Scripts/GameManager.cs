@@ -15,19 +15,10 @@ namespace Yashlan.manage
         Lose
     }
 
-    public enum LevelType
-    {
-        Easy,
-        Medium,
-        Hard
-    }
-
     public class GameManager : SingletonBehaviour<GameManager>
     {
         [SerializeField]
         private GameState _gameState;
-        [SerializeField]
-        private LevelType _levelType;
 
         [Header("locked Slot Tower")]
         [SerializeField]
@@ -94,44 +85,22 @@ namespace Yashlan.manage
 
         public int CurrentGold => _currentGold;
 
+        int index = 0;
         public void BuySlotTowerOnClick()
         {
             if ((_currentGold - _priceSlotTower) >= 0)
             {
-                if (!_lockedTowerList[0].activeSelf)
+                if (!_lockedTowerList[index].activeSelf)
                 {
-                    _lockedTowerList[0].SetActive(true);
+                    _lockedTowerList[index].SetActive(true);
                     _currentGold -= _priceSlotTower;
-                    _priceSlotTower *= 2;
                     _textPriceBuySlot.text = "Buy Slot Tower (" + _priceSlotTower.ToString() + "Gold)";
-                    return;
-                }
-
-                if (!_lockedTowerList[1].activeSelf)
-                {
-                    _lockedTowerList[1].SetActive(true);
-                    _currentGold -= _priceSlotTower;
-                    _priceSlotTower *= 2;
-                    _textPriceBuySlot.text = "Buy Slot Tower (" + _priceSlotTower.ToString() + "Gold)";
-                    return;
-                }
-
-                if (!_lockedTowerList[2].activeSelf)
-                {
-                    _lockedTowerList[2].SetActive(true);
-                    _currentGold -= _priceSlotTower;
-                    _priceSlotTower *= 2;
-                    _textPriceBuySlot.text = "Buy Slot Tower (" + _priceSlotTower.ToString() + "Gold)";
-                    return;
-                }
-
-                if (!_lockedTowerList[3].activeSelf)
-                {
-                    _lockedTowerList[3].SetActive(true);
-                    _currentGold -= _priceSlotTower;
-                    _textPriceBuySlot.text = "Slot Tower Max";
-                    _buttonBuySlot.interactable = false;
-                    return;
+                    index++;
+                    if (index > 3)
+                    {
+                        _textPriceBuySlot.text = "Slot Tower Max!";
+                        _buttonBuySlot.interactable = false;
+                    }
                 }
             }
             else

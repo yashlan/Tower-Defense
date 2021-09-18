@@ -254,17 +254,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e776d8e11b8eead489ed075a1570f803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _towerType: 0
   _price: 50
   _towerPlace: {fileID: 8546153638271209030}
   _towerHead: {fileID: 5910004320724158589}
   _healthBar: {fileID: 3252433372795746420}
   _healthFill: {fileID: 2636135559043233921}
-  _maxHealth: 5
-  _currentHealth: 5
-  _shootPower: 2
+  _maxHealth: 25
+  _currentHealth: 25
+  _shootPower: 1
   _shootDistance: 5
-  _shootDelay: 3
+  _shootDelay: 1
   _bulletSpeed: 4
   _bulletSplashRadius: 0
   _bulletPrefab: {fileID: 5715893120588328562, guid: 610f575de6ffbcd4aab69c9fbc2f771c,

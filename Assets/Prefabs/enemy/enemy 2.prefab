@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 1
-  _maxHealth: 10
+  _maxHealth: 7
   _moveSpeed: 0.5
   _head: {fileID: 5823237234436724904}
   _healthBar: {fileID: 1152884418106917732}

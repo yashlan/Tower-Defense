@@ -434,14 +434,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameState: 0
-  _levelType: 0
-  _priceSlotTower: 500
+  _priceSlotTower: 750
   _lockedTowerList:
   - {fileID: 704950289}
   - {fileID: 1795210879}
   - {fileID: 497700539}
   - {fileID: 504670199}
-  _currentGold: 200
+  _currentGold: 400
   _panelInstruction: {fileID: 1766213886}
   _textCurrentGold: {fileID: 1294660699}
   _goldNotEnoughPrefab: {fileID: 6346242010766918390, guid: b4878ecaffc1c4646a22f58bb3cb08e9,
@@ -460,7 +459,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &84236686
 GameObject:
@@ -825,10 +824,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d41700f0f76844fa7cc6f196b9366d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bgmSound: {fileID: 8300000, guid: c0282283c569a1a4d8e6572dd1f47a1d, type: 3}
   _audioSource: {fileID: 217201603}
   _audioClips:
   - {fileID: 8300000, guid: a5c2d1c6a029f274cbd58d505c254d86, type: 3}
   - {fileID: 8300000, guid: 136923972a1d4fd449a4f1bc83413082, type: 3}
+  - {fileID: 8300000, guid: 813e78a41cf3a634891d84ef6da5d428, type: 3}
+  - {fileID: 8300000, guid: 7c817db850692d64fa99e6ad7391389b, type: 3}
 --- !u!4 &217201605
 Transform:
   m_ObjectHideFlags: 0
@@ -841,7 +843,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &220429622
 GameObject:
@@ -1265,6 +1267,8 @@ MonoBehaviour:
   _enemyPrefabs:
   - {fileID: 8120228999463065443, guid: b5474233a87d008489677274c5a55048, type: 3}
   - {fileID: 8120228999463065443, guid: fc29c6e8857036341be62aa57c6ab5a4, type: 3}
+  - {fileID: 8120228999463065443, guid: 2381ca016340d6741a1766a4c56fd3d9, type: 3}
+  - {fileID: 8120228999463065443, guid: 4db0e68930598e441ba33220b8ff0543, type: 3}
   _enemyPaths:
   - {fileID: 567603599}
   - {fileID: 958547179}
@@ -1279,7 +1283,7 @@ MonoBehaviour:
   - {fileID: 557136872}
   _spawnDelay: 5
   _maxLives: 3
-  _totalEnemy: 15
+  _totalEnemy: 100
   _panel: {fileID: 668954034}
   _statusInfo: {fileID: 989402930}
   _livesInfo: {fileID: 891439708}
@@ -1522,6 +1526,105 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &509486826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 509486830}
+  - component: {fileID: 509486829}
+  - component: {fileID: 509486828}
+  - component: {fileID: 509486827}
+  m_Layer: 5
+  m_Name: Canvas Game Info
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &509486827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509486826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &509486828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509486826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1280, y: 720}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &509486829
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509486826}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 5
+  m_TargetDisplay: 0
+--- !u!224 &509486830
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509486826}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 668954035}
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1982,14 +2085,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 668954034}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 158.89656}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 989402929}
   - {fileID: 1935309077}
-  m_Father: {fileID: 819443413}
-  m_RootOrder: 6
+  m_Father: {fileID: 509486830}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2367,7 +2470,6 @@ RectTransform:
   - {fileID: 1294660698}
   - {fileID: 60886480}
   - {fileID: 1766213887}
-  - {fileID: 668954035}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3425,7 +3527,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: da ad asd ada sdas sa asd assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+  m_Text: "To win this game you must defeat all enemies using towers before your life
+    runs out. There are 100 total enemies and you are only given 3 lives.\r\nGood
+    Luck!"
 --- !u!222 &1631893382
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3530,7 +3634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1766213887
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3718,6 +3822,7 @@ GameObject:
   - component: {fileID: 1935309077}
   - component: {fileID: 1935309079}
   - component: {fileID: 1935309078}
+  - component: {fileID: 1935309080}
   m_Layer: 5
   m_Name: reload msg
   m_TagString: Untagged
@@ -3786,6 +3891,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935309076}
   m_CullTransparentMesh: 0
+--- !u!95 &1935309080
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935309076}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d9444be1a219f4a4f9a237e1201c9e20, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2000044833
 GameObject:
   m_ObjectHideFlags: 0
@@ -3877,6 +4001,7 @@ GameObject:
   - component: {fileID: 2040403677}
   - component: {fileID: 2040403676}
   - component: {fileID: 2040403675}
+  - component: {fileID: 2040403678}
   m_Layer: 5
   m_Name: Button start
   m_TagString: Untagged
@@ -4005,6 +4130,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2040403673}
   m_CullTransparentMesh: 0
+--- !u!95 &2040403678
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040403673}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 78a34dd6f003f9448a23b8186ce5a902, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2061531290
 GameObject:
   m_ObjectHideFlags: 0
@@ -4069,5 +4213,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
