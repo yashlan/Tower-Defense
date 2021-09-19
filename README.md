@@ -8,6 +8,7 @@ ukuran layar 16:9
 ## Fitur tambahan
 
 - Singleton Behaviour
+- visual efek
 - bg music, drop tower, win dan lose sound
 - animasi di tombol/text
 - menambahkan harga tower
