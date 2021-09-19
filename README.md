@@ -9,7 +9,7 @@ ukuran layar 16:9
 
 - Singleton Behaviour
 - visual efek
-- bg music, drop tower, win dan lose sound
+- bg music, drop tower, unlocked slot, win dan lose sound
 - animasi di tombol/text
 - menambahkan harga tower
 - menambahkan gold untuk membeli tower/slot tower
