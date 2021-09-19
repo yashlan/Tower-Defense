@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 3
+  _vfxOnDie: {fileID: 100008, guid: 7075bd5fe1480184695a32611c15da57, type: 3}
   _maxHealth: 15
   _moveSpeed: 1
   _head: {fileID: 5823237234436724904}

@@ -20,6 +20,8 @@ namespace Yashlan.enemy
         [SerializeField]
         private EnemyType _enemyType;
         [SerializeField]
+        private GameObject _vfxOnDie;
+        [SerializeField]
         private int _maxHealth = 1;
         [SerializeField]
         private float _moveSpeed = 1f;
@@ -99,7 +101,9 @@ namespace Yashlan.enemy
                 gameObject.SetActive(false);
                 AudioPlayer.Instance.PlaySFX(AudioPlayer.ENEMY_DIE_SFX);
 
-                if(_enemyType == EnemyType.Enemy1) GameManager.Instance.AddGoldOnEnemyDead(50);
+                Instantiate(_vfxOnDie, transform.position, Quaternion.identity);
+
+                if (_enemyType == EnemyType.Enemy1) GameManager.Instance.AddGoldOnEnemyDead(50);
                 if(_enemyType == EnemyType.Enemy2) GameManager.Instance.AddGoldOnEnemyDead(100);
                 if(_enemyType == EnemyType.Enemy3) GameManager.Instance.AddGoldOnEnemyDead(150);
                 if(_enemyType == EnemyType.Enemy4) GameManager.Instance.AddGoldOnEnemyDead(200);

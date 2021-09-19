@@ -14,6 +14,8 @@ namespace Yashlan.bullet
     {
         [SerializeField]
         private BulletType _bulletType;
+        [SerializeField]
+        private GameObject _vfx;
         private int _bulletPower;
         private float _bulletSpeed;
         private float _bulletSplashRadius;
@@ -81,6 +83,8 @@ namespace Yashlan.bullet
                     else
                         _targetEnemy.ReduceEnemyHealth(_bulletPower);
 
+                    Instantiate(_vfx, transform.position, Quaternion.identity);
+
                     _targetEnemy = null;
                 }
             }
@@ -97,6 +101,8 @@ namespace Yashlan.bullet
                         LevelManager.Instance.ExplodeAt(transform.position, _bulletSplashRadius, _bulletPower);
                     else
                         _targetTower.ReduceTowerHealth(_bulletPower);
+
+                    Instantiate(_vfx, transform.position, Quaternion.identity);
 
                     _targetTower = null;
                 }

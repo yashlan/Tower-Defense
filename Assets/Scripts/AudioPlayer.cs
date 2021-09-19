@@ -6,13 +6,14 @@ namespace Yashlan.audio
 {
     public class AudioPlayer : SingletonBehaviour<AudioPlayer>
     {
-        public const string DROP_TOWER_SFX = "drop-tower";
-        public const string HIT_ENEMY_SFX  = "hit-enemy";
-        public const string HIT_TOWER_SFX  = "hit-enemy";
-        public const string ENEMY_DIE_SFX  = "enemy-die";
-        public const string TOWER_DIE_SFX  = "enemy-die";
-        public const string GAME_WIN_SFX   = "game-win";
-        public const string GAME_LOSE_SFX  = "game-lose";
+        public const string UNLOCKED_SLOT_SFX = "unlocked-slot";
+        public const string DROP_TOWER_SFX    = "drop-tower";
+        public const string HIT_ENEMY_SFX     = "hit-enemy";
+        public const string HIT_TOWER_SFX     = "hit-enemy";
+        public const string ENEMY_DIE_SFX     = "enemy-die";
+        public const string TOWER_DIE_SFX     = "enemy-die";
+        public const string GAME_WIN_SFX      = "game-win";
+        public const string GAME_LOSE_SFX     = "game-lose";
 
         [SerializeField]
         private AudioClip _bgmSound;

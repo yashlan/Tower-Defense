@@ -12,6 +12,8 @@ namespace Yashlan.tower
         [SerializeField]
         private bool _isDie = false;
         [SerializeField]
+        private GameObject _vfxOnDie;
+        [SerializeField]
         private int _price;
         [SerializeField]
         private SpriteRenderer _towerPlace;
@@ -73,6 +75,7 @@ namespace Yashlan.tower
                 {
                     _currentHealth = 0;
                     AudioPlayer.Instance.PlaySFX(AudioPlayer.TOWER_DIE_SFX);
+                    Instantiate(_vfxOnDie, transform.position, Quaternion.identity);
                     Destroy(gameObject);
                 }
             }

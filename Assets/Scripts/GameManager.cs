@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Yashlan.audio;
 using Yashlan.util;
 
 namespace Yashlan.manage
@@ -38,10 +39,11 @@ namespace Yashlan.manage
         [SerializeField]
         private GameObject _goldNotEnoughPrefab;
         [SerializeField]
-        private Text _textPriceBuySlot;
-        [SerializeField]
         private Button _buttonBuySlot;
-
+        [SerializeField]
+        private Text[] _textPriceSlots;
+        [SerializeField]
+        private Text _textSlotTowerMax;
 
         private GameObject notEnoughInfo = null;
 
@@ -55,6 +57,8 @@ namespace Yashlan.manage
 
         public void StartGameOnClick() => _gameState = GameState.Start;
 
+        public void AddGoldOnEnemyDead(int amount) => _currentGold += amount;
+
 
         void Start()
         {
@@ -64,17 +68,12 @@ namespace Yashlan.manage
 
             notEnoughInfo = Instantiate(_goldNotEnoughPrefab, canvasPos, Quaternion.identity, canvas.transform);
             notEnoughInfo.SetActive(false);
-
-            _textPriceBuySlot.text = "Buy Slot Tower (" + _priceSlotTower.ToString() + " Gold)";
-
-            _textCurrentGold.text = null;
-
             _panelInstruction.SetActive(true);
         }
 
         void Update()
         {
-            if(_gameState == GameState.Start) _textCurrentGold.text = "Gold : " + _currentGold.ToString();
+            _textCurrentGold.text = "Gold : " + _currentGold.ToString();
         }
 
         public IEnumerator ShowNotEnoughGoldInfo()
@@ -92,13 +91,17 @@ namespace Yashlan.manage
             {
                 if (!_lockedTowerList[index].activeSelf)
                 {
+                    AudioPlayer.Instance.PlaySFX(AudioPlayer.UNLOCKED_SLOT_SFX);
                     _lockedTowerList[index].SetActive(true);
                     _currentGold -= _priceSlotTower;
-                    _textPriceBuySlot.text = "Buy Slot Tower (" + _priceSlotTower.ToString() + "Gold)";
                     index++;
                     if (index > 3)
                     {
-                        _textPriceBuySlot.text = "Slot Tower Max!";
+                        foreach (var text in _textPriceSlots)
+                        {
+                            text.gameObject.SetActive(false);
+                        }
+                        _textSlotTowerMax.gameObject.SetActive(true);
                         _buttonBuySlot.interactable = false;
                     }
                 }
@@ -115,12 +118,5 @@ namespace Yashlan.manage
                 _currentGold -= priceTower;
             }
         }
-
-        public void UpgradeTower(int priceUpgrade)
-        {
-            if ((_currentGold - priceUpgrade) >= 0) _currentGold -= priceUpgrade;
-        }
-
-        public void AddGoldOnEnemyDead(int amount) => _currentGold += amount;
     }
 }
