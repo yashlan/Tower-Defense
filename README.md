@@ -26,3 +26,6 @@ anda diberi 400 Gold di awal permainan untuk membeli tower. untuk mendapatkan go
 ## ScreenShoot
 ![](https://github.com/yashlan/Tower-Defense/blob/main/ss/ss1.gif) <br>
 gif by ezgif.com
+
+## How To Play
+Extract File Export Here.rar kemudian jalankan file .exe nya
